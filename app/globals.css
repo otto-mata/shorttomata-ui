@@ -1,26 +1,26 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+    --color-ground: #f6f7f9;
+    --color-ink: #0e1116;
+    --color-muted: #3b4252;
+    --color-line: #dde1e8;
+    --color-line-strong: #c9cfd9;
+    --color-accent: #2f4fe0;
+    --color-accent-ink: #1a3fcc;
+    --color-accent-soft: #e8eeff;
+    --color-accent-line: #b9c8ff;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+    /* next/font injects --f-display / --f-sans / --f-mono (see layout.tsx) */
+    --font-display: var(--f-display), Georgia, serif;
+    --font-sans: var(--f-sans), Arial, sans-serif;
+    --font-mono: var(--f-mono), ui-monospace, monospace;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    @apply bg-ground text-ink font-sans;
+}
+
+button {
+    cursor: pointer;
 }

@@ -1,15 +1,46 @@
 import type { Metadata } from "next";
+import {
+  Bricolage_Grotesque,
+  IBM_Plex_Sans,
+  IBM_Plex_Mono,
+} from "next/font/google";
 import "./globals.css";
+import { Providers } from "./providers";
+
+const display = Bricolage_Grotesque({
+  subsets: ["latin"],
+  weight: ["600", "700"],
+  variable: "--f-display",
+});
+const sans = IBM_Plex_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--f-sans",
+});
+const mono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--f-mono",
+});
 
 export const metadata: Metadata = {
-  title: "Shorttomata URL Shortener",
-  description: "Create and manage short links with a fast, simple interface.",
+  title: "Snipr — short links, no fuss",
+  description: "Paste a link, get a short one you can share anywhere.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en" className="h-full antialiased">
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html
+      lang="en"
+      className={`${display.variable} ${sans.variable} ${mono.variable}`}
+    >
+      <body className="flex min-h-screen flex-col">
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
