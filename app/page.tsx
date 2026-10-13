@@ -6,12 +6,15 @@ type ShortLink = {
   id: string;
   originalUrl: string;
   shortCode: string;
-  shortUrl: string;
   clicks: number;
   createdAt: string;
 };
 
 const BASE_URL = "https://sho.rt";
+const ALIAS_PATTERN = /^[a-zA-Z0-9_-]{3,30}$/;
+
+const createShortUrl = (shortCode: string) =>
+  `${BASE_URL}/${encodeURIComponent(shortCode)}`;
 
 const mockShortenUrl = async (
   originalUrl: string,
@@ -26,7 +29,6 @@ const mockShortenUrl = async (
     id: crypto.randomUUID(),
     originalUrl,
     shortCode,
-    shortUrl: `${BASE_URL}/${shortCode}`,
     clicks: 0,
     createdAt: new Date().toISOString(),
   };
@@ -53,8 +55,17 @@ export default function Home() {
     setCopiedLink("");
 
     const normalizedUrl = url.trim();
+    const normalizedAlias = customAlias.trim();
+
     if (!normalizedUrl) {
       setError("Please enter a URL.");
+      return;
+    }
+
+    if (normalizedAlias && !ALIAS_PATTERN.test(normalizedAlias)) {
+      setError(
+        "Alias must be 3-30 characters using letters, numbers, - or _ only.",
+      );
       return;
     }
 
@@ -71,7 +82,7 @@ export default function Home() {
 
     setLoading(true);
     try {
-      const shortened = await mockShortenUrl(normalizedUrl, customAlias);
+      const shortened = await mockShortenUrl(normalizedUrl, normalizedAlias);
       setRecentLinks((previous) => [shortened, ...previous].slice(0, 5));
       setCustomAlias("");
       setUrl("");
@@ -179,31 +190,34 @@ export default function Home() {
             </div>
           ) : (
             <ul className="space-y-3">
-              {recentLinks.map((link) => (
-                <li
-                  key={link.id}
-                  className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800"
-                >
-                  <p className="truncate text-sm text-zinc-500 dark:text-zinc-400">
-                    {link.originalUrl}
-                  </p>
-                  <div className="mt-2 flex items-center justify-between gap-3">
-                    <a
-                      href={link.shortUrl}
-                      className="text-sm font-semibold text-zinc-900 underline underline-offset-2 dark:text-zinc-100"
-                    >
-                      {link.shortUrl}
-                    </a>
-                    <button
-                      type="button"
-                      onClick={() => handleCopy(link.shortUrl)}
-                      className="rounded-md border border-zinc-300 px-2.5 py-1 text-xs font-medium text-zinc-700 transition hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-800"
-                    >
-                      {copiedLink === link.shortUrl ? "Copied" : "Copy"}
-                    </button>
-                  </div>
-                </li>
-              ))}
+              {recentLinks.map((link) => {
+                const shortUrl = createShortUrl(link.shortCode);
+                return (
+                  <li
+                    key={link.id}
+                    className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800"
+                  >
+                    <p className="truncate text-sm text-zinc-500 dark:text-zinc-400">
+                      {link.originalUrl}
+                    </p>
+                    <div className="mt-2 flex items-center justify-between gap-3">
+                      <a
+                        href={shortUrl}
+                        className="text-sm font-semibold text-zinc-900 underline underline-offset-2 dark:text-zinc-100"
+                      >
+                        {shortUrl}
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() => handleCopy(shortUrl)}
+                        className="rounded-md border border-zinc-300 px-2.5 py-1 text-xs font-medium text-zinc-700 transition hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-800"
+                      >
+                        {copiedLink === shortUrl ? "Copied" : "Copy"}
+                      </button>
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </section>
