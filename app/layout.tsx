@@ -24,8 +24,8 @@ const mono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Snipr — short links, no fuss",
-  description: "Paste a link, get a short one you can share anywhere.",
+  title: "shorttomata",
+  description: "Paste a link, get a short(er) one.",
 };
 
 export default function RootLayout({

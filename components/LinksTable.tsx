@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { api, type Link } from "@/lib/api";
+import { api, LinkListResponse, type Link } from "@/lib/api";
 import { timeAgo } from "@/lib/time";
 import { CopyIcon, TrashIcon } from "./Icons";
 
@@ -16,7 +16,7 @@ function Row({
   onDelete: () => void;
   deleting: boolean;
 }) {
-  const shortUrl = `http://localhost:8080/${link.short_code}`;
+  const shortUrl = `${window.location.origin}/${link.short_code}`;
   return (
     <div
       className={`${COLS} items-center border-b border-[#EEF0F4] py-4 last:border-b-0`}
@@ -65,10 +65,17 @@ export function LinksTable() {
 
   const remove = useMutation({
     mutationFn: api.deleteLink,
-    onSuccess: (_d, code) =>
-      qc.setQueryData<Link[]>(["links"], (old) =>
-        old?.filter((l) => l.short_code !== code),
-      ),
+    onSuccess: (_d, code) => {
+      return qc.setQueryData<LinkListResponse>(["links"], (old) => {
+        const newList = Object.assign({}, old);
+        newList.items = Object.assign(
+          [],
+          old?.items?.filter((l) => l.short_code !== code),
+        );
+        newList.count = newList.items.length;
+        return newList;
+      });
+    },
   });
 
   return (

@@ -13,32 +13,22 @@ export function Header() {
   const logout = useMutation({
     mutationFn: api.logout,
     onSuccess: () => {
-      qc.removeQueries({ queryKey: ["me"] });
+      qc.setQueryData(["me"], null);
       qc.removeQueries({ queryKey: ["links"] });
-      window.location.assign("/");
     },
   });
 
   return (
-    <header className="flex flex-wrap items-center justify-between gap-4 border-b border-line px-6 py-5 md:px-12">
+    <header className="flex flex-wrap items-center justify-between gap-2 sm:gap-4 border-b border-line px-4 sm:px-6 py-5 md:px-12">
       <Link
         href="/"
         className="font-display text-[26px] font-bold tracking-tight"
       >
-        Snipr<span className="text-accent">.</span>
+        sh<span className="text-accent">o</span>r
+        <span className="text-accent">ttomata</span>
       </Link>
 
       <nav className="flex flex-wrap items-center gap-7 text-[15px]">
-        <a href="#" className="hover:underline">
-          Features
-        </a>
-        <a href="#" className="hover:underline">
-          API
-        </a>
-        <a href="#" className="hover:underline">
-          Docs
-        </a>
-
         {isLoading ? (
           <span className="h-11 w-44" aria-hidden />
         ) : me ? (
@@ -47,15 +37,7 @@ export function Header() {
               href="/dashboard/"
               className="flex min-h-11 items-center gap-2 font-medium hover:underline"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={me.avatarUrl}
-                alt=""
-                width={28}
-                height={28}
-                className="rounded-full"
-              />
-              {me.login}
+              Dashboard
             </Link>
             <button
               onClick={() => logout.mutate()}

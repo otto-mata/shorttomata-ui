@@ -16,6 +16,10 @@
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
+    "@tanstack/devtools-vite": "^0.8.5",
+    "@tanstack/react-devtools": "^0.10.13",
+    "@tanstack/react-query-devtools": "^5.104.2",
+    "@tanstack/react-router-devtools": "^1.167.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
