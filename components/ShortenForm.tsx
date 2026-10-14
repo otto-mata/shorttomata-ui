@@ -4,15 +4,18 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { api } from "@/lib/api";
 import { ResultCard } from "./ResultCard";
+import { LinkURL } from "@/schema/LinkCreation";
 
 export function ShortenForm({ mute }: { mute: boolean }) {
   const [url, setUrl] = useState("");
+  const [validationErr, setValidationErr] = useState("");
   const qc = useQueryClient();
 
   const create = useMutation({
     mutationFn: api.createLink,
     onSuccess: () => {
       setUrl("");
+      setValidationErr("");
       qc.invalidateQueries({ queryKey: ["links"] });
     },
   });
@@ -22,7 +25,11 @@ export function ShortenForm({ mute }: { mute: boolean }) {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          if (url.trim()) create.mutate(url.trim());
+          if (!LinkURL.validate(url)) {
+            setValidationErr("Invalid URL");
+          } else if (url.trim()) {
+            create.mutate(url.trim());
+          }
         }}
         className="mx-auto flex w-full max-w-3xl flex-col md:flex-row md:flex-wrap gap-2.5"
       >
@@ -47,12 +54,12 @@ export function ShortenForm({ mute }: { mute: boolean }) {
         </button>
       </form>
 
-      {create.error && (
+      {(validationErr || create.error) && (
         <p
           role="alert"
           className="mx-auto mt-3 w-full max-w-3xl text-left text-sm text-red-700"
         >
-          {create.error.message}
+          {create.error ? create.error.message : validationErr}
         </p>
       )}
       {create.data && !mute && <ResultCard link={create.data} />}

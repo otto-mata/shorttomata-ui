@@ -12,7 +12,6 @@ export default function Dashboard() {
   const router = useRouter();
   const { data: me, isError, isLoading } = useMe();
 
-  // Client-side guard only; the Go API enforces auth for real.
   useEffect(() => {
     if (isError) router.replace("/");
   }, [isError, router]);
@@ -21,18 +20,20 @@ export default function Dashboard() {
     <>
       <Header />
       <main className="mx-auto w-full max-w-280 px-6 pb-16 pt-12">
-        <h2 className="mb-2 md:mb-6 font-display text-[28px] font-semibold tracking-tight">
-          Shorten a new link
-        </h2>
-        <ShortenForm mute={true} />
-        <hr className="my-4 text-line" />
-        <h2 className="mb-2 md:mb-6 font-display text-[28px] font-semibold tracking-tight">
-          Your links
-        </h2>
         {isLoading || !me ? (
           <p className="text-muted">Checking your session…</p>
         ) : (
-          <LinksTable />
+          <>
+            <h2 className="mb-2 md:mb-6 font-display text-[28px] font-semibold tracking-tight">
+              Shorten a new link
+            </h2>
+            <ShortenForm mute={true} />
+            <hr className="my-4 text-line" />
+            <h2 className="mb-2 md:mb-6 font-display text-[28px] font-semibold tracking-tight">
+              Your links
+            </h2>
+            <LinksTable />
+          </>
         )}
       </main>
       <Footer />

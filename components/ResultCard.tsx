@@ -25,7 +25,7 @@ export function ResultCard({ link }: { link: Link }) {
   return (
     <div
       role="status"
-      className="mx-auto mt-4.5 flex w-full max-w-3xl flex-wrap items-center justify-between gap-4 rounded-xl border border-accent-line bg-accent-soft px-[18px] py-3.5 text-left"
+      className="mx-auto mt-4.5 flex w-full max-w-3xl flex-wrap items-center justify-between gap-4 rounded-xl border border-accent-line bg-accent-soft px-4.5 py-3.5 text-left"
     >
       <div className="flex min-w-0 flex-col gap-1">
         <a

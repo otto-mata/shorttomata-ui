@@ -50,7 +50,7 @@ export function Header() {
         ) : (
           <a
             href="/api/v1/auth/github"
-            className="flex min-h-11 items-center gap-2.5 rounded-lg bg-ink px-[18px] font-medium text-white"
+            className="flex min-h-9 sm:min-h-11 text-xs sm:text-sm items-center gap-1 rounded-lg bg-ink px-2 sm:px-4 font-medium text-white"
           >
             <BranchIcon />
             Sign in with GitHub

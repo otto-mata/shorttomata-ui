@@ -80,7 +80,7 @@ export function LinksTable() {
 
   return (
     <div className="overflow-x-auto rounded-[14px] border border-line bg-white">
-      <div className="min-w-[760px]">
+      <div className="min-w-190">
         <div
           className={`${COLS} border-b border-line py-3.5 font-mono text-xs font-medium uppercase tracking-[0.06em] text-muted`}
         >
